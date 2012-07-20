@@ -38,6 +38,9 @@ ENTRY(v7wbi_flush_user_tlb_range)
 	dsb
 	mov	r0, r0, lsr #PAGE_SHIFT		@ align address
 	mov	r1, r1, lsr #PAGE_SHIFT
+#ifdef CONFIG_ARM_ERRATA_720789
+	mov	r3, #0
+#endif
 #ifdef CONFIG_ARCH_MSM8X60
 	mov	r0, r0, lsl #PAGE_SHIFT
 #else
@@ -46,18 +49,21 @@ ENTRY(v7wbi_flush_user_tlb_range)
 #endif
 	mov	r1, r1, lsl #PAGE_SHIFT
 1:
-#ifdef CONFIG_ARCH_MSM8X60
-	ALT_SMP(mcr	p15, 0, r0, c8, c3, 3)	@ TLB invalidate U MVA (shareable)
-#else
-	ALT_SMP(mcr	p15, 0, r0, c8, c3, 1)	@ TLB invalidate U MVA (shareable)
+#ifdef CONFIG_ARM_ERRATA_720789
+	ALT_SMP(mcr	p15, 0, r0, c8, c3, 3)	@ TLB invalidate U MVA all ASID (shareable)
 #endif
-	ALT_UP(mcr	p15, 0, r0, c8, c7, 1)	@ TLB invalidate U MVA
+#ifdef CONFIG_ARCH_MSM8X60
+        ALT_SMP(mcr        p15, 0, r0, c8, c3, 3)        @ TLB invalidate U MVA (shareable)
+#else
+        ALT_SMP(mcr        p15, 0, r0, c8, c3, 1)        @ TLB invalidate U MVA (shareable)
+#endif
+        ALT_UP(mcr        p15, 0, r0, c8, c7, 1)        @ TLB invalidate U MVA
 
-	add	r0, r0, #PAGE_SZ
-	cmp	r0, r1
-	blo	1b
-	dsb
-	mov	pc, lr
+        add        r0, r0, #PAGE_SZ
+        cmp        r0, r1
+        blo        1b
+        dsb
+        mov        pc, lr
 ENDPROC(v7wbi_flush_user_tlb_range)
 
 /*
@@ -76,17 +82,17 @@ ENTRY(v7wbi_flush_kern_tlb_range)
 	mov	r1, r1, lsl #PAGE_SHIFT
 1:
 #ifdef CONFIG_ARCH_MSM8X60
-	ALT_SMP(mcr	p15, 0, r0, c8, c3, 3)	@ TLB invalidate U MVA (shareable)
+        ALT_SMP(mcr        p15, 0, r0, c8, c3, 3)        @ TLB invalidate U MVA (shareable)
 #else
-	ALT_SMP(mcr	p15, 0, r0, c8, c3, 1)	@ TLB invalidate U MVA (shareable)
+        ALT_SMP(mcr        p15, 0, r0, c8, c3, 1)        @ TLB invalidate U MVA (shareable)
 #endif
-	ALT_UP(mcr	p15, 0, r0, c8, c7, 1)	@ TLB invalidate U MVA
-	add	r0, r0, #PAGE_SZ
-	cmp	r0, r1
-	blo	1b
-	dsb
-	isb
-	mov	pc, lr
+        ALT_UP(mcr        p15, 0, r0, c8, c7, 1)        @ TLB invalidate U MVA
+        add        r0, r0, #PAGE_SZ
+        cmp        r0, r1
+        blo        1b
+        dsb
+        isb
+        mov        pc, lr
 ENDPROC(v7wbi_flush_kern_tlb_range)
 
 	__INIT
