@@ -50,7 +50,10 @@ struct elevator_ops
 	elevator_dispatch_fn *elevator_dispatch_fn;
 	elevator_add_req_fn *elevator_add_req_fn;
 	elevator_reinsert_req_fn *elevator_reinsert_req_fn;
+<<<<<<< HEAD
 	elevator_is_urgent_fn *elevator_is_urgent_fn;
+=======
+>>>>>>> 242b9ea... block: Add support for reinsert a dispatched req
 
 	elevator_activate_req_fn *elevator_activate_req_fn;
 	elevator_deactivate_req_fn *elevator_deactivate_req_fn;
