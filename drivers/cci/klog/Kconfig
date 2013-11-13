@@ -1,6 +1,6 @@
 config CCI_KLOG
 	bool "CCI kernel and logcat log collector"
-	default y
+	default n
 
 config CCI_KLOG_RECORD_KERNEL_TIMESTAMP
 	bool "Record kernel timestmp into KLog header area"

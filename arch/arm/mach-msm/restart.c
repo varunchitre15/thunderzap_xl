@@ -345,11 +345,13 @@ void msm_restart(char mode, const char *cmd)
 #endif
 		abnormalflag = ABNORAML_CRASH;
 		set_warmboot();
+#ifdef CONFIG_CCI_KLOG
 #ifdef CCI_KLOG_ALLOW_FORCE_PANIC			
 		__raw_writel(CONFIG_WARMBOOT_CRASH, restart_reason);
 #else
 		__raw_writel(CONFIG_WARMBOOT_NORMAL, restart_reason);
 		*backupcrashflag = CONFIG_WARMBOOT_CRASH;
+#endif
 #endif	
 	}
 	/* Write download mode flags if restart_mode says so */
