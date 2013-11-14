@@ -170,6 +170,11 @@ CONFIG_HAVE_HW_BREAKPOINT=y
 CONFIG_HAVE_ARCH_JUMP_LABEL=y
 
 #
+# ThunderZap configs
+#
+CONFIG_CPU_VOLTAGE_TABLE=y
+
+#
 # GCOV-based kernel profiling
 #
 # CONFIG_GCOV_KERNEL is not set
