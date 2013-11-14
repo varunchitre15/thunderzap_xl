@@ -1564,6 +1564,11 @@ config MSM_DALRPC_TEST
 	default m
 	help
 	  Exercises DAL RPC calls to QDSP6.
+config CPU_VOLTAGE_TABLE
+   bool "Enable CPU Voltage Table via sysfs for adjustements"
+   default n
+   help
+     Krait User Voltage Control
 
 if CPU_FREQ_MSM
 
