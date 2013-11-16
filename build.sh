@@ -1,17 +1,17 @@
+#!/bin/bash
 TOOLCHAIN="/home/varunchitre15/toolchains/arm-eabi-linaro-4.6.2/bin/arm-eabi"
-MODULES_DIR="/home/varunchitre15/kernel/kernel/modules"
+MODULES_DIR="../modules"
 KERNEL_DIR="/home/varunchitre15/kernel/kernel"
 make ARCH=arm CROSS_COMPILE=$TOOLCHAIN- sa77_defconfig
 make ARCH=arm CROSS_COMPILE=$TOOLCHAIN- -j8
 if [ -a $KERNEL_DIR/arch/arm/boot/zImage ];
 then
 echo "Copying modules"
-find -name '*.ko' -exec cp -av {} $MODULES_DIR/ \;
+find . -name '*.ko' -exec cp {} $MODULES_DIR/ \;
 cd $MODULES_DIR
 echo "Stripping modules for size"
-for m in $(find . | grep .ko | grep './')
-do echo $m
-$TOOLCHAIN-strip --strip-unneeded $m
-done
+$TOOLCHAIN-strip --strip-unneeded *.ko
+cd $KERNEL_DIR
 else
 echo "Compilation failed! Fix the errors!"
+fi
