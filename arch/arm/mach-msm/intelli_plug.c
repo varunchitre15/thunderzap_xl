@@ -448,6 +448,7 @@ int __init intelli_plug_init(void)
 }
 
 MODULE_AUTHOR("Paul Reioux <reioux@gmail.com>");
+MODULE_AUTHOR("Varun Chitre <varun.chitre15@gmail.com>");
 MODULE_DESCRIPTION("'intell_plug' - An intelligent cpu hotplug driver for "
 	"Low Latency Frequency Transition capable processors");
 MODULE_LICENSE("GPL");
