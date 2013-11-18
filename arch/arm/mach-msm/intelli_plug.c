@@ -358,6 +358,7 @@ static int input_dev_filter(const char *input_dev_name)
 {
 	if (strstr(input_dev_name, "touchscreen") ||
 		strstr(input_dev_name, "sec_touchscreen") ||
+		strstr(input_dev_name, "cyttsp3-i2c") ||
 		strstr(input_dev_name, "touch_dev") ||
 		strstr(input_dev_name, "-keypad") ||
 		strstr(input_dev_name, "-nav") ||
