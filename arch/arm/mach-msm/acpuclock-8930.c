@@ -166,13 +166,11 @@ static struct acpu_level acpu_freq_tbl_slow[] __initdata = {
 	{ 1, {   918000, HFPLL, 1, 0x22 }, L2(10), 1100000 },
 	{ 0, {   972000, HFPLL, 1, 0x24 }, L2(10), 1125000 },
 	{ 1, {  1026000, HFPLL, 1, 0x26 }, L2(10), 1125000 },
-
-#ifdef DISABLE_MSM8230_LITE
 	{ 0, {  1080000, HFPLL, 1, 0x28 }, L2(15), 1175000 },
 	{ 1, {  1134000, HFPLL, 1, 0x2A }, L2(15), 1175000 },
 	{ 1, {  1188000, HFPLL, 1, 0x2C }, L2(15), 1200000 },
-#endif // #ifdef DISABLE_MSM8230_LITE
-
+	{ 1, {  1242000, HFPLL, 1, 0x2E }, L2(15), 1200000 },
+    { 1, {  1296000, HFPLL, 1, 0x30 }, L2(15), 1225000 },
 	{ 0, { 0 } }
 };
 
@@ -190,13 +188,11 @@ static struct acpu_level acpu_freq_tbl_nom[] __initdata = {
 	{ 1, {   918000, HFPLL, 1, 0x22 }, L2(10), 1075000 },
 	{ 0, {   972000, HFPLL, 1, 0x24 }, L2(10), 1100000 },
 	{ 1, {  1026000, HFPLL, 1, 0x26 }, L2(10), 1100000 },
-
-#ifdef DISABLE_MSM8230_LITE
 	{ 0, {  1080000, HFPLL, 1, 0x28 }, L2(15), 1150000 },
 	{ 1, {  1134000, HFPLL, 1, 0x2A }, L2(15), 1150000 },
 	{ 1, {  1188000, HFPLL, 1, 0x2C }, L2(15), 1175000 },
-#endif // #ifdef DISABLE_MSM8230_LITE
-
+	{ 1, {  1242000, HFPLL, 1, 0x2E }, L2(15), 1175000 },
+    { 1, {  1296000, HFPLL, 1, 0x30 }, L2(15), 1200000 },
 	{ 0, { 0 } }
 };
 
@@ -214,13 +210,11 @@ static struct acpu_level acpu_freq_tbl_fast[] __initdata = {
 	{ 1, {   918000, HFPLL, 1, 0x22 }, L2(10), 1025000 },
 	{ 0, {   972000, HFPLL, 1, 0x24 }, L2(10), 1050000 },
 	{ 1, {  1026000, HFPLL, 1, 0x26 }, L2(10), 1050000 },
-
-#ifdef DISABLE_MSM8230_LITE
 	{ 0, {  1080000, HFPLL, 1, 0x28 }, L2(15), 1100000 },
 	{ 1, {  1134000, HFPLL, 1, 0x2A }, L2(15), 1100000 },
 	{ 1, {  1188000, HFPLL, 1, 0x2C }, L2(15), 1125000 },
-#endif // #ifdef DISABLE_MSM8230_LITE
-
+	{ 1, {  1242000, HFPLL, 1, 0x2E }, L2(15), 1125000 },
+    { 1, {  1296000, HFPLL, 1, 0x30 }, L2(15), 1150000 },
 	{ 0, { 0 } }
 };
 
