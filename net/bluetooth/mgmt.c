@@ -2822,7 +2822,7 @@ int mgmt_powered(u16 index, u8 powered)
 	BT_DBG("hci%u %d", index, powered);
 
 	mgmt_pending_foreach(MGMT_OP_SET_POWERED, index, mode_rsp, &match);
-	
+
 	if (!powered) {
 		u8 status = ENETDOWN;
 		mgmt_pending_foreach(0, index, cmd_status_rsp, &status);
