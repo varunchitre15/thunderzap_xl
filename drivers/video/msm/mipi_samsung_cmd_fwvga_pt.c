@@ -83,7 +83,7 @@ static int __init mipi_cmd_samsung_fwvga_pt_init(void)
 	pinfo.mipi.wr_mem_continue = 0x3c;
 	pinfo.mipi.wr_mem_start = 0x2c;
 	pinfo.mipi.dlane_swap = 0x1;
-	pinfo.mipi.frame_rate = 58;
+	pinfo.mipi.frame_rate = 59;
 	pinfo.mipi.dsi_phy_db = &dsi_cmd_mode_phy_db;
 
 	ret = mipi_samsung_device_register(&pinfo, MIPI_DSI_PRIM,
