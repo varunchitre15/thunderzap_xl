@@ -1636,7 +1636,7 @@ config INTELLI_PLUG
      Generic Intelli-plug cpu hotplug driver for ARM SOCs
 	 
 config CPU_OVERCLOCK
-	boot "Overclock MSM8930 to 1.5Ghz"
+	bool "Overclock MSM8930 to 1.5Ghz"
 	default n
 	help
 		sets max CPU clock to 1.5Ghz
