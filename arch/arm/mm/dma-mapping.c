@@ -853,52 +853,50 @@ void arm_dma_free(struct device *dev, size_t size, void *cpu_addr,
 }
 
 static void dma_cache_maint_page(struct page *page, unsigned long offset,
-	size_t size, enum dma_data_direction dir,
-	void (*op)(const void *, size_t, int))
+        size_t size, enum dma_data_direction dir,
+        void (*op)(const void *, size_t, int))
 {
-	unsigned long pfn;
-	size_t left = size;
+        /*
+         * A single sg entry may refer to multiple physically contiguous
+         * pages.  But we still need to process highmem pages individually.
+         * If highmem is not configured then the bulk of this loop gets
+         * optimized out.
+         */
+        size_t left = size;
+        do {
+                size_t len = left;
+                void *vaddr;
 
-	pfn = page_to_pfn(page) + offset / PAGE_SIZE;
-	offset %= PAGE_SIZE;
+                if (PageHighMem(page)) {
+                        if (len + offset > PAGE_SIZE) {
+                                if (offset >= PAGE_SIZE) {
+                                        page += offset / PAGE_SIZE;
+                                        offset %= PAGE_SIZE;
+                                }
+                                len = PAGE_SIZE - offset;
+                        }
 
-	/*
-	 * A single sg entry may refer to multiple physically contiguous
-	 * pages.  But we still need to process highmem pages individually.
-	 * If highmem is not configured then the bulk of this loop gets
-	 * optimized out.
-	 */
-	do {
-		size_t len = left;
-		void *vaddr;
-
-		page = pfn_to_page(pfn);
-
-		if (PageHighMem(page)) {
-			if (len + offset > PAGE_SIZE)
-				len = PAGE_SIZE - offset;
-			}
-
-			if (cache_is_vipt_nonaliasing()) {
-				vaddr = kmap_atomic(page);
-				op(vaddr + offset, len, dir);
-				kunmap_atomic(vaddr);
-			} else {
-				vaddr = kmap_high_get(page);
-				if (vaddr) {
-					op(vaddr + offset, len, dir);
-					kunmap_high(page);
-				}
-			}
-		} else {
-			vaddr = page_address(page) + offset;
-			op(vaddr, len, dir);
-		}
-		offset = 0;
-		pfn++;
-		left -= len;
-	} while (left);
+                        if (cache_is_vipt_nonaliasing()) {
+                                vaddr = kmap_atomic(page);
+                                op(vaddr + offset, len, dir);
+                                kunmap_atomic(vaddr);
+                        } else {
+                                vaddr = kmap_high_get(page);
+                                if (vaddr) {
+                                        op(vaddr + offset, len, dir);
+                                        kunmap_high(page);
+                                }
+                        }
+                } else {
+                        vaddr = page_address(page) + offset;
+                        op(vaddr, len, dir);
+                }
+                offset = 0;
+                page++;
+                left -= len;
+        } while (left);
 }
+
 
 /*
  * Make an area consistent for devices.
