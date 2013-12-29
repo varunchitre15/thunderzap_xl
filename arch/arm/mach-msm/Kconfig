@@ -1634,6 +1634,12 @@ config INTELLI_PLUG
    default n
    help
      Generic Intelli-plug cpu hotplug driver for ARM SOCs
+	 
+config CPU_OVERCLOCK
+	boot "Overclock MSM8930 to 1.5Ghz"
+	default n
+	help
+		sets max CPU clock to 1.5Ghz
 
 config MSM_AVS_HW
 	bool "Enable Adaptive Voltage Scaling (AVS)"
