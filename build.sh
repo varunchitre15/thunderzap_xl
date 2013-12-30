@@ -6,6 +6,7 @@ KERNEL_DIR="/home/varunchitre15/kernel/kernel"
 if [ -a $KERNEL_DIR/arch/arm/boot/zImage ];
 then
 rm $ZIMAGE
+rm $MODULES_DIR/*
 fi
 make ARCH=arm CROSS_COMPILE=$TOOLCHAIN- sa77_defconfig
 make ARCH=arm CROSS_COMPILE=$TOOLCHAIN- -j8
