@@ -6033,6 +6033,7 @@ bool is_free_buddy_page(struct page *page)
 static struct trace_print_flags pageflag_names[] = {
 	{1UL << PG_locked,		"locked"	},
 	{1UL << PG_error,		"error"		},
+	{1UL << PG_readahead,           "PG_readahead"  },
 	{1UL << PG_referenced,		"referenced"	},
 	{1UL << PG_uptodate,		"uptodate"	},
 	{1UL << PG_dirty,		"dirty"		},
