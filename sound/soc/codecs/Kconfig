@@ -454,3 +454,9 @@ config SND_SOC_TPA2028D
 	default n
 	help
 	  Texas Instruments 3W Mono Class-D Audio Amplifier
+	  
+config THUNDERSONIC_ENGINE_GPL
+   tristate "Controller for WCD9304 codec"
+   default y
+   help
+   Sound Control for WCD9304 sound card v1.0
