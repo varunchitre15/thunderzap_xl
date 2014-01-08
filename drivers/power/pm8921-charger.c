@@ -2455,6 +2455,7 @@ void pm8921_charger_vbus_draw(unsigned int mA)
 
 
 	if (mA > USB_WALL_THRESHOLD_MA)
+		PrintLog_INFO("Specified current of %d greater than USB wall threshold of %d\n", mA, USB_WALL_THRESHOLD_MA);
 		set_usb_now_ma = USB_WALL_THRESHOLD_MA;
 	else
 		set_usb_now_ma = mA;
@@ -2465,6 +2466,7 @@ void pm8921_charger_vbus_draw(unsigned int mA)
 	if (the_chip)
 		__pm8921_charger_vbus_draw(set_usb_now_ma);
 	else
+	PrintLog_INFO("chip check failed\n");
 		/*
 		 * called before pmic initialized,
 		 * save this value and use it at probe
