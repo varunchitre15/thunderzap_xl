@@ -1152,6 +1152,7 @@ static void msm_otg_notify_charger(struct msm_otg *motg, unsigned mA)
 		return;
 	#ifdef CONFIG_PM8921_CHARGER_CONTROL
 	dev_info(motg->phy.dev, "Avail curr from USB = %u But using custom current = %d\n", mA, usb_curr_val);
+	dev_info(motg->phy.dev, "Current charger type = %d", motg->chg_type);
 	#else
 	dev_info(motg->phy.dev, "Avail curr from USB = %u\n", mA);
 	#endif
