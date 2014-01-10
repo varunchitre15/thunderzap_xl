@@ -1640,6 +1640,12 @@ config CPU_OVERCLOCK
 	default n
 	help
 		sets max CPU clock to 1.5Ghz
+		
+config PM8921_CHARGER_CONTROL
+	bool "Charger current control driver for PM8921 type hardware"
+	default n
+	help
+		Exposes sysfs controls for various charging currents
 
 config MSM_AVS_HW
 	bool "Enable Adaptive Voltage Scaling (AVS)"

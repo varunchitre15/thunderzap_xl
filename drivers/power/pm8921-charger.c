@@ -31,6 +31,10 @@
 #include <linux/mfd/pm8xxx/batt-alarm.h>
 #include <linux/ratelimit.h>
 
+#ifdef CONFIG_PM8921_CHARGER_CONTROL
+#include <linux/pm8921_chg_ctrl.h>
+#endif
+
 #include <mach/msm_xo.h>
 #include <mach/msm_hsusb.h>
 
@@ -1537,8 +1541,11 @@ static enum power_supply_property pm_power_props_mains[] = {
 static char *pm_power_supplied_to[] = {
 	"battery",
 };
-
+#ifdef CONFIG_PM8921_CHARGER_CONTROL
+int USB_WALL_THRESHOLD_MA=500;
+#else
 #define USB_WALL_THRESHOLD_MA	500
+#endif
 static int AC_reported_exist = 0;//YF
 static int pm_power_get_property_mains(struct power_supply *psy,
 				  enum power_supply_property psp,
@@ -2455,8 +2462,15 @@ void pm8921_charger_vbus_draw(unsigned int mA)
 
 
 	if (mA > USB_WALL_THRESHOLD_MA)
-		PrintLog_INFO("Specified current of %d greater than USB wall threshold of %d\n", mA, USB_WALL_THRESHOLD_MA);
+	{
+		#ifdef CONFIG_PM8921_CHARGER_CONTROL
+		PrintLog_INFO("Specified current of %d greater than USB wall threshold of %d..overriding the check\n", mA, USB_WALL_THRESHOLD_MA);
+		USB_WALL_THRESHOLD_MA = mA;
+		set_usb_now_ma = mA;
+		#else
 		set_usb_now_ma = USB_WALL_THRESHOLD_MA;
+		#endif
+	}
 	else
 		set_usb_now_ma = mA;
 
