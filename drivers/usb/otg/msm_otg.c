@@ -1151,6 +1151,11 @@ static void msm_otg_notify_charger(struct msm_otg *motg, unsigned mA)
 	if (motg->cur_power == mA)
 		return;
 	#ifdef CONFIG_PM8921_CHARGER_CONTROL
+	if(mA==0)
+	{
+	dev_info(motg->phy.dev, "No current: Assuming charger removed\n");
+	}
+	else
 	dev_info(motg->phy.dev, "Avail curr from USB = %u But using custom current = %d\n", mA, usb_curr_val);
 	dev_info(motg->phy.dev, "Current charger type = %d", motg->chg_type);
 	#else
@@ -1162,16 +1167,24 @@ static void msm_otg_notify_charger(struct msm_otg *motg, unsigned mA)
 	 *  Use Power Supply API if supported, otherwise fallback
 	 *  to legacy pm8921 API.
 	 */
+#ifdef CONFIG_PM8921_CHARGER_CONTROL
+	if(mA==0)
+	{
 	if (msm_otg_notify_power_supply(motg, mA))
-		pm8921_charger_vbus_draw(
-		#ifdef CONFIG_PM8921_CHARGER_CONTROL
-		usb_curr_val);
-		#else
-		mA);
-		#endif
+		pm8921_charger_vbus_draw(mA);
+	}
+	else
+	{
+	if (msm_otg_notify_power_supply(motg, mA))
+	pm8921_charger_vbus_draw(usb_curr_val);
+	}
+#endif
 		
 #ifdef CONFIG_PM8921_CHARGER_CONTROL
 	reg_curr = motg->cur_power;
+	if(mA==0)
+	motg->cur_power = 0;
+	else
 	motg->cur_power = usb_curr_val;
 #else
 	motg->cur_power = mA;
