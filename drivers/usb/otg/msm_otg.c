@@ -1185,8 +1185,20 @@ if(mswitch==1)
 	}
 	else
 	{
+	if(motg->chg_type == SUPPLY_TYPE_USB)
+	{
+	curr_target = usb_curr_val;
+	}
+	else if(motg->chg_type == SUPPLY_TYPE_AC) //AC
+	{
+	curr_target=ac_curr_val;
+	}
+	else
+	{
+	curr_target=mA; // Use default value if none of the chargers match
+	}
 	if (msm_otg_notify_power_supply(motg, mA))
-	pm8921_charger_vbus_draw(usb_curr_val);
+	pm8921_charger_vbus_draw(curr_target);
 	}
 }
 else
@@ -1203,7 +1215,14 @@ if(mswitch==1)
 	if(mA==0)
 	motg->cur_power = 0;
 	else
+	{
+	if(motg->chg_type == SUPPLY_TYPE_USB)
 	motg->cur_power = usb_curr_val;
+	else if(motg->chg_type == SUPPLY_TYPE_AC)
+	motg->cur_power = ac_curr_val;
+	else
+	motg->cur_power = mA;
+	}
 }
 else
 {

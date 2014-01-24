@@ -20,13 +20,14 @@
 #include <linux/kernel.h>
 #include <linux/pm8921_chg_ctrl.h>
 
-#define DRIVER_VERSION  1
+#define DRIVER_VERSION  2
 #define DRIVER_SUBVER 0
 
 int reg_curr;
 
 int mswitch=0;
 int usb_curr_val=500;
+int ac_curr_val=1500;
 
 static ssize_t mswitch_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
 {
@@ -69,16 +70,39 @@ static ssize_t usb_cust_current_store(struct kobject *kobj, struct kobj_attribut
 	return count;
 }
 
+static ssize_t ac_cust_current_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
+{
+	return sprintf(buf, "System current: %d\nCustom Current:%d", reg_curr, ac_curr_val);
+}
+
+static ssize_t ac_cust_current_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count)
+{
+	int new_cur;
+	sscanf(buf, "%d", &new_cur);
+	if(mswitch==1)
+	ac_curr_val=new_cur;
+	else
+	pr_info("Main switch disabled, neglecting values\n");
+	
+	return count;
+}
+
 static ssize_t chgr_ver_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
 {
 	return sprintf(buf, "Charger Control %u.%u", DRIVER_VERSION, DRIVER_SUBVER);
 }	
 
 static struct kobj_attribute usb_current_attribute =
-	__ATTR(custom_current_usb,
+	__ATTR(custom_usb_current,
 		0666,
 		usb_cust_current_show,
 		usb_cust_current_store);
+
+static struct kobj_attribute ac_current_attribute =
+	__ATTR(custom_ac_current,
+		0666,
+		ac_cust_current_show,
+		ac_cust_current_store);
 		
 static struct kobj_attribute mswitch_attribute =
 	__ATTR(enabled,
@@ -94,6 +118,7 @@ static struct kobj_attribute chgr_ctrl_ver_attribute =
 static struct attribute *charger_control_attrs[] =
 	{
 		&usb_current_attribute.attr,
+		&ac_current_attribute.attr,
 		&mswitch_attribute.attr,
 		&chgr_ctrl_ver_attribute.attr,
 		NULL,

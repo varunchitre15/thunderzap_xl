@@ -18,7 +18,10 @@
 #define _LINUX_PM8921_CHG_CTRL_H
 
 extern int mswitch;
-extern int usb_curr_val;
+extern int usb_curr_val, ac_curr_val;
 extern int reg_curr;
+
+#define SUPPLY_TYPE_USB 1
+#define SUPPLY_TYPE_AC 2
 
 #endif
