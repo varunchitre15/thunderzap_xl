@@ -45,6 +45,7 @@
 
 #ifdef CONFIG_PM8921_CHARGER_CONTROL
 #include <linux/pm8921_chg_ctrl.h>
+int curr_target;
 #endif
 
 #include <asm/mach-types.h>
