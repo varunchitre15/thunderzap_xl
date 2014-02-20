@@ -1159,7 +1159,12 @@ static void msm_otg_notify_charger(struct msm_otg *motg, unsigned mA)
 	dev_info(motg->phy.dev, "No current: Assuming charger removed\n");
 	}
 	else
-	dev_info(motg->phy.dev, "Avail curr from USB = %u But using custom current = %d\n", mA, usb_curr_val);
+	{
+	if(motg->chg_type == SUPPLY_TYPE_USB)
+	dev_info(motg->phy.dev, "Avail curr from USB = %u , using custom USB current = %d\n", mA, usb_curr_val);
+	else if(motg->chg_type == SUPPLY_TYPE_AC)
+	dev_info(motg->phy.dev, "Avail curr from USB = %u , using custom AC current = %d\n", mA, ac_curr_val);
+	}
 	dev_info(motg->phy.dev, "Current charger type = %d", motg->chg_type);
 	}
 	else
