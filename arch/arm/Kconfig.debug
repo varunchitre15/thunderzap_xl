@@ -22,7 +22,7 @@ config STRICT_DEVMEM
 # n, but then RMK will have to kill you ;).
 config FRAME_POINTER
 	bool
-	depends on !THUMB2_KERNEL
+	depends on !THUMB2_KERNEL && !THUNDERSONIC_ENGINE_GPL
 	default n
 	help
 	  If you say N here, the resulting kernel will be slightly smaller and
