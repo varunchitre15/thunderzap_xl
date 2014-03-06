@@ -40,6 +40,28 @@ static struct msm_bus_vectors grp3d_low_vectors[] = {
 	},
 };
 
+#ifdef CONFIG_GPU_OVERCLOCK
+
+static struct msm_bus_vectors grp3d_nominal_vectors[] = {
+	{
+		.src = MSM_BUS_MASTER_GRAPHICS_3D,
+		.dst = MSM_BUS_SLAVE_EBI_CH0,
+		.ab = 0,
+		.ib = KGSL_CONVERT_TO_MBPS(4264),
+	},
+};
+
+static struct msm_bus_vectors grp3d_max_vectors[] = {
+	{
+		.src = MSM_BUS_MASTER_GRAPHICS_3D,
+		.dst = MSM_BUS_SLAVE_EBI_CH0,
+		.ab = 0,
+		.ib = KGSL_CONVERT_TO_MBPS(5290),
+	},
+};
+
+#else
+
 static struct msm_bus_vectors grp3d_nominal_vectors[] = {
 	{
 		.src = MSM_BUS_MASTER_GRAPHICS_3D,
@@ -57,6 +79,8 @@ static struct msm_bus_vectors grp3d_max_vectors[] = {
 		.ib = KGSL_CONVERT_TO_MBPS(4264),
 	},
 };
+
+#endif
 
 static struct msm_bus_paths grp3d_bus_scale_usecases[] = {
 	{
@@ -115,6 +139,29 @@ static struct kgsl_device_iommu_data kgsl_3d0_iommu_data[] = {
 
 static struct kgsl_device_platform_data kgsl_3d0_pdata = {
 	.pwrlevel = {
+	
+#ifdef CONFIG_GPU_OVERCLOCK
+		{
+ 			.gpu_freq = 533333000,
+ 			.bus_freq = 5,
+ 			.io_fraction = 0,
+ 		},
+        {
+ 			.gpu_freq = 487500000,
+ 			.bus_freq = 4,
+ 			.io_fraction = 0,
+ 		},
+        {
+ 			.gpu_freq = 400000000,
+ 			.bus_freq = 3,
+ 			.io_fraction = 0,
+ 		},
+ 		{
+ 			.gpu_freq = 320000000,
+ 			.bus_freq = 2,
+ 			.io_fraction = 0,
+ 		},
+#else
 		{
 			.gpu_freq = 400000000,
 			.bus_freq = 3,
@@ -125,6 +172,7 @@ static struct kgsl_device_platform_data kgsl_3d0_pdata = {
 			.bus_freq = 2,
 			.io_fraction = 33,
 		},
+#endif
 		{
 			.gpu_freq = 192000000,
 			.bus_freq = 1,
@@ -136,7 +184,7 @@ static struct kgsl_device_platform_data kgsl_3d0_pdata = {
 		},
 	},
 	.init_level = 1,
-	.num_levels = 4,
+	.num_levels = 6,
 	.set_grp_async = NULL,
 	.idle_timeout = HZ/12,
 	.nap_allowed = true,
@@ -165,12 +213,12 @@ void __init msm8930_init_gpu(void)
 
 	/* Set the turbo speed for the AA and AB respectively */
 
-	//if (cpu_is_msm8930aa())
-		kgsl_3d0_pdata.pwrlevel[0].gpu_freq = 400000000;
-	/* if (cpu_is_msm8930ab()) {
+	if (cpu_is_msm8930aa())
+		kgsl_3d0_pdata.pwrlevel[0].gpu_freq = 450000000;
+	else if (cpu_is_msm8930ab()) {
 		kgsl_3d0_pdata.pwrlevel[0].gpu_freq = 500000000;
 		grp3d_max_vectors[0].ib = KGSL_CONVERT_TO_MBPS(4800);
-	} */
+	}
 
 	/* Set up the chip ID based on the SoC version */
 

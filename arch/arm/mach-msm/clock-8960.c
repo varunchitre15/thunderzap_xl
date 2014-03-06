@@ -3529,7 +3529,10 @@ static struct clk_freq_tbl clk_tbl_gfx3d[] = {
 	F_GFX3D(266667000, pll2,  1,  3),
 	F_GFX3D(320000000, pll2,  2,  5),
 	F_GFX3D(400000000, pll2,  1,  2),
-	F_GFX3D(450000000, pll15, 1,  2),
+#ifdef CONFIG_GPU_OVERCLOCK
+	F_GFX3D(487500000, pll15, 1,  2),
+	F_GFX3D(533333000, pll2,  2,  3),
+#endif
 	F_END
 };
 
@@ -3588,11 +3591,20 @@ static unsigned long fmax_gfx3d_8064[VDD_DIG_NUM] = {
 	[VDD_DIG_HIGH]    = 400000000
 };
 
+#ifdef CONFIG_GPU_OVERCLOCK
+static unsigned long fmax_gfx3d_8930[VDD_DIG_NUM] = {
+	[VDD_DIG_LOW]     = 192000000,
+	[VDD_DIG_NOMINAL] = 320000000,
+	[VDD_DIG_HIGH]    = 533333000
+};
+
+#else
 static unsigned long fmax_gfx3d_8930[VDD_DIG_NUM] = {
 	[VDD_DIG_LOW]     = 192000000,
 	[VDD_DIG_NOMINAL] = 320000000,
 	[VDD_DIG_HIGH]    = 400000000
 };
+#endif
 
 static unsigned long fmax_gfx3d_8930aa[VDD_DIG_NUM] = {
 	[VDD_DIG_LOW]     = 192000000,
