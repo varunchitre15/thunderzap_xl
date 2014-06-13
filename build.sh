@@ -1,16 +1,16 @@
 #!/bin/bash
-TOOLCHAIN="/home/varunchitre15/toolchains/arm-eabi-linaro-4.6.2/bin/arm-eabi"
+TOOLCHAIN="/root/toolchains/arm-eabi-linaro-4.6.2/bin/arm-eabi"
 MODULES_DIR="../modules"
-ZIMAGE="/home/varunchitre15/kernel/kernel/arch/arm/boot/zImage"
-KERNEL_DIR="/home/varunchitre15/kernel/kernel"
+ZIMAGE="/root/tz/arch/arm/boot/zImage"
+KERNEL_DIR="/root/tz"
 if [ -a $KERNEL_DIR/arch/arm/boot/zImage ];
 then
 rm $ZIMAGE
 rm $MODULES_DIR/*
 fi
-make ARCH=arm CROSS_COMPILE=$TOOLCHAIN- sa77_defconfig
+make ARCH=arm CROSS_COMPILE=$TOOLCHAIN- cyanogenmod_taoshan_defconfig
 make ARCH=arm CROSS_COMPILE=$TOOLCHAIN- -j8
-if [ -a $KERNEL_DIR/arch/arm/boot/zImage ];
+if [ -a $ZIMAGE ];
 then
 echo "Copying modules"
 rm $MODULES_DIR/*
