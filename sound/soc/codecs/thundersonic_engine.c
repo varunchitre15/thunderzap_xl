@@ -35,7 +35,7 @@ static int is_boosted = 0;
 
 static ssize_t speaker_boost_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
 {
-        return sprintf(buf, "Current boost level: %u\nMin:0 Max:8", sitar_read(tz_codec_pointer, SITAR_A_CDC_RX1_VOL_CTL_B2_CTL));
+        return sprintf(buf, "%u", sitar_read(tz_codec_pointer, SITAR_A_CDC_RX1_VOL_CTL_B2_CTL));
 
 }
 
@@ -80,9 +80,9 @@ static ssize_t headphone_boost_store(struct kobject *kobj, struct kobj_attribute
 static ssize_t headphone_boost_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
 {
 	if(is_boosted==1)
-	return sprintf(buf, "Current status:boosted");
+	return sprintf(buf, "1");
 	else
-	return sprintf(buf, "Current status:unboosted");
+	return sprintf(buf, "0");
 }
 
 static ssize_t thundersonic_version_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
