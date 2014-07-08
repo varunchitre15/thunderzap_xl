@@ -21,6 +21,8 @@ KERNEL_DIR="/root/tz"
 MKBOOTIMG="/root/tz/tools/mkbootimg"
 MKBOOTFS="/root/tz/tools/mkbootfs"
 BUILD_START=$(date +"%s")
+export KBUILD_BUILD_USER="varun.chitre15"
+export KBUILD_BUILD_HOST="Monster-Machine"
 if [ -a $KERNEL_DIR/arch/arm/boot/zImage ];
 then
 rm $ZIMAGE
