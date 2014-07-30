@@ -14,7 +14,7 @@
  #
  #
 #!/bin/bash
-CROSS_COMPILE="/root/toolchains/arm-eabi-linaro-4.6.2/bin/arm-eabi-"
+export CROSS_COMPILE="/root/toolchains/arm-eabi-linaro-4.6.2/bin/arm-eabi-"
 STRIP="/root/toolchains/arm-eabi-linaro-4.6.2/bin/arm-eabi-strip"
 MODULES_DIR="../modules"
 ZIMAGE="/root/tz/arch/arm/boot/zImage"
