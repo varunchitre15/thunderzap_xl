@@ -1,4 +1,4 @@
-ccflags-y := -Iinclude/drm -Idrivers/gpu/msm
+ccflags-y := -Iinclude/drm -Idrivers/gpu/msm -O3 -mcpu=cortex-a7 -mtune=cortex-a7 -marm -mfpu=neon-vfpv4 -mvectorize-with-neon-quad -munaligned-access
 
 msm_kgsl_core-y = \
 	kgsl.o \
