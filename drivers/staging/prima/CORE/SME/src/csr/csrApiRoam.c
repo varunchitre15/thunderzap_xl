@@ -5043,6 +5043,13 @@ static tANI_BOOLEAN csrRoamProcessResults( tpAniSirGlobal pMac, tSmeCmd *pComman
                        roamInfo.pbFrames = pSession->connectedInfo.pbFrames;
                    }
                 }
+                /* Update the staId from the previous connected profile info
+                   as the reassociation is triggred at SME/HDD */
+                if( (eCsrHddIssuedReassocToSameAP == pCommand->u.roamCmd.roamReason) ||
+                    (eCsrSmeIssuedReassocToSameAP == pCommand->u.roamCmd.roamReason) )
+                {
+                    roamInfo.staId = pSession->connectedInfo.staId;
+                }
 #ifndef WLAN_MDM_CODE_REDUCTION_OPT
                 // Indicate SME-QOS with reassoc success event, only after 
                 // copying the frames 
@@ -7794,7 +7801,7 @@ void csrRoamJoinedStateMsgProcessor( tpAniSirGlobal pMac, void *pMsgBuf )
             tSirSmeAssocIndToUpperLayerCnf *pUpperLayerAssocCnf;
             tCsrRoamInfo roamInfo;
             tCsrRoamInfo *pRoamInfo = NULL;
-            tANI_U32 sessionId = 0;
+            tANI_U32 sessionId;
             eHalStatus status;
             smsLog( pMac, LOG1, FL("ASSOCIATION confirmation can be given to upper layer "));
             palZeroMemory(pMac->hHdd, &roamInfo, sizeof(tCsrRoamInfo));
