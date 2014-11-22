@@ -21,13 +21,14 @@
 #include <linux/kallsyms.h>
 #include <linux/mfd/wcd9xxx/wcd9304_registers.h>
 
-#define ENGINE_VERSION  1
-#define ENGINE_VERSION_SUB 5
+#define ENGINE_VERSION  2
+#define ENGINE_VERSION_SUB 0
 
 #define REG_HSGAIN_DEF 18
 #define REG_HSGAIN_BOOSTED 0
 
 extern struct snd_soc_codec *tz_codec_pointer;
+extern void setlock(bool val);
 
 unsigned int sitar_read(struct snd_soc_codec *codec, unsigned int reg);
 int sitar_write(struct snd_soc_codec *codec, unsigned int reg, unsigned int value);
@@ -48,7 +49,9 @@ static ssize_t speaker_boost_store(struct kobject *kobj, struct kobj_attribute *
 	pr_info("[thundersonic-engine] Too much gain value can damage your speakers: Reverting to safer value 8\n");
 	val=8;
 	}
+	setlock(false);
     sitar_write(tz_codec_pointer, SITAR_A_CDC_RX1_VOL_CTL_B2_CTL, val);
+	setlock(true);
 	return count;
 }
 
@@ -58,15 +61,19 @@ static ssize_t headphone_boost_store(struct kobject *kobj, struct kobj_attribute
 	sscanf(buf, "%u", &status);
 	if(status==1)
 	{
+	setlock(false);
 	sitar_write(tz_codec_pointer, SITAR_A_RX_HPH_L_GAIN, REG_HSGAIN_BOOSTED);
 	sitar_write(tz_codec_pointer, SITAR_A_RX_HPH_R_GAIN, REG_HSGAIN_BOOSTED);
+	setlock(true);
 	pr_info("[thundersonic-engine] Headphone boost enabled\n");
 	is_boosted=1;
 	}
 	else if(status==0)
 	{
+	setlock(false);
 	sitar_write(tz_codec_pointer, SITAR_A_RX_HPH_L_GAIN, REG_HSGAIN_DEF);
 	sitar_write(tz_codec_pointer, SITAR_A_RX_HPH_R_GAIN, REG_HSGAIN_DEF);
+	setlock(true);
 	pr_info("[thundersonic-engine] Headphone boost disabled\n");
 	is_boosted=0;
 	}
