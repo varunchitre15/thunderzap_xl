@@ -15,8 +15,8 @@
  #
 #!/bin/bash
 # export CROSS_COMPILE="/root/toolchains/arm-eabi-linaro-4.6.2/bin/arm-eabi-"
-export CROSS_COMPILE="/root/linaro/4.7.3-2013.04.20130415/bin/arm-linux-gnueabihf-"
-STRIP="/root/toolchains/arm-eabi-linaro-4.6.2/bin/arm-eabi-strip"
+export CROSS_COMPILE="/root/cm11/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7/bin/arm-eabi-"
+STRIP="/root/cm11/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7/bin/arm-eabi-strip"
 MODULES_DIR="../modules"
 ZIMAGE="/root/tz/arch/arm/boot/zImage"
 KERNEL_DIR="/root/tz"
@@ -33,7 +33,7 @@ rm $ZIMAGE
 rm $MODULES_DIR/*
 fi
 make cyanogenmod_taoshan_defconfig
-make -j8
+make -j32
 if [ -a $ZIMAGE ];
 then
 echo "Copying modules"
