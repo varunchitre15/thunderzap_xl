@@ -15,7 +15,8 @@
  #
 #!/bin/bash
 # export CROSS_COMPILE="/root/toolchains/arm-eabi-linaro-4.6.2/bin/arm-eabi-"
-export CROSS_COMPILE="/root/cm11/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7/bin/arm-eabi-"
+# export CROSS_COMPILE="/root/cm11/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7/bin/arm-eabi-"
+export CROSS_COMPILE="/root/linaro/4.8.3-2013.11.20131205/bin/arm-linux-gnueabihf-"
 STRIP="/root/cm11/prebuilts/gcc/linux-x86/arm/arm-eabi-4.7/bin/arm-eabi-strip"
 MODULES_DIR="../modules"
 ZIMAGE="/root/tz/arch/arm/boot/zImage"
