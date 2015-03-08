@@ -20,7 +20,6 @@ busybox mkdir -m 755 -p /sys
 # create device nodes
 busybox mknod -m 600 /dev/block/mmcblk0 b 179 0
 busybox mknod -m 600 ${BOOTREC_EVENT_NODE}
-busybox mknod -m 600 ${BOOTREC_EVENT_NODE2}
 busybox mknod -m 666 /dev/null c 1 3
 
 # mount filesystems
@@ -34,8 +33,6 @@ busybox echo 255 > ${BOOTREC_LED_BLUE}
 
 # keycheck
 busybox cat ${BOOTREC_EVENT} > /dev/keycheck&
-busybox sleep 3
-busybox cat ${BOOTREC_EVENT2} > /dev/keycheck2&
 busybox sleep 3
 
 # android ramdisk
@@ -57,21 +54,6 @@ if [ -s /dev/keycheck ] || busybox grep -q warmboot=0x77665502 /proc/cmdline ; t
 	extract_elf_ramdisk -i ${BOOTREC_FOTA} -o /sbin/ramdisk-recovery.cpio -t / -c
 	busybox rm /sbin/sh
 	load_image=/sbin/ramdisk-recovery.cpio
-elif [ -s /dev/keycheck2 -o -e /cache/recovery/boot2 ]; then
-	busybox echo 0 > /sys/module/msm_fb/parameters/align_buffer
-	busybox echo 'TWRP' >>boot.txt
-	# orange led for recoveryboot
-	busybox echo 100 > ${BOOTREC_LED_RED}
-	busybox echo 100 > ${BOOTREC_LED_GREEN}
-	busybox echo 255 > ${BOOTREC_LED_BLUE}
-	busybox echo 100 > ${BOOTREC_VIBRATOR}
-	# recovery ramdisk
-	busybox mknod -m 600 ${BOOTREC_FOTA_NODE}
-	busybox mount -o remount,rw /
-	busybox ln -sf /sbin/busybox /sbin/sh
-	extract_elf_ramdisk -i ${BOOTREC_FOTA} -o /sbin/ramdisk-recovery-twrp.cpio -t / -c
-	busybox rm /sbin/sh
-	load_image=/sbin/ramdisk-recovery-twrp.cpio
 else
 	busybox echo 'ANDROID BOOT' >>boot.txt
 	# poweroff LED
@@ -82,7 +64,6 @@ fi
 
 # kill the keycheck process
 busybox pkill -f "busybox cat ${BOOTREC_EVENT}"
-busybox pkill -f "busybox cat ${BOOTREC_EVENT2}"
 
 # unpack the ramdisk image
 busybox cpio -i < ${load_image}
