@@ -27,7 +27,7 @@ BUILD_START=$(date +"%s")
 export ARCH=arm
 export SUBARCH=arm
 export KBUILD_BUILD_USER="varun.chitre15"
-export KBUILD_BUILD_HOST="Monster-Machine"
+export KBUILD_BUILD_HOST="EroticBox"
 if [ -a $KERNEL_DIR/arch/arm/boot/zImage ];
 then
 rm $ZIMAGE
